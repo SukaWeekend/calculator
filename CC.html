@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Lengkap</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #343a40;
+        }
+
+        label,
+        select,
+        input[type="number"],
+        button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 30px 0;
+            border: 1px solid #6c757d;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .math-icon {
+            display: block;
+            margin: 10px auto;
+            width: 50px;
+            height: 50px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Math_logo.svg/1200px-Math_logo.svg.png') no-repeat center center;
+            background-size: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Kalkulator Lengkap</h1>
+        <div class="math-icon"></div>
+        <label for="operation">Pilih Operasi:</label>
+        <select id="operation" onchange="showInputFields()">
+            <option value="">--Pilih--</option>
+            <option value="circleRadius">Lingkaran: Menghitung Diameter, Luas, dan Keliling dari Jari-jari</option>
+            <option value="circleDiameter">Lingkaran: Menghitung Jari-jari dari Diameter</option>
+            <option value="circleArc">Lingkaran: Menghitung Luas Juring</option>
+            <option value="circleTangent">Lingkaran: Menghitung Garis Singgung</option>
+            <option value="circleInTriangle">Segitiga: Lingkaran Dalam</option>
+            <option value="circleOutTriangle">Segitiga: Lingkaran Luar</option>
+            <option value="square">Persegi: Menghitung Luas dan Keliling dari Sisi</option>
+            <option value="rectangle">Persegi Panjang: Menghitung Luas dan Keliling dari Panjang dan Lebar</option>
+            <option value="triangle">Segitiga: Menghitung Luas dari Alas dan Tinggi</option>
+            <option value="distance">Penghitung Jarak</option>
+            <option value="chemical">Perhitungan Kimia</option>
+        </select>
+
+        <div id="inputFields"></div>
+        <button onclick="hitung()">Hitung</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function showInputFields() {
+            const operation = document.getElementById('operation').value;
+            const inputFields = document.getElementById('inputFields');
+            inputFields.innerHTML = ''; // Reset input fields
+
+            if (operation === 'circleRadius') {
+                inputFields.innerHTML += '<label for="radius">Masukkan Jari-jari (r):</label>';
+                inputFields.innerHTML += '<input type="number" id="radius" placeholder="Jari-jari dalam satuan" />';
+            } else if (operation === 'circleDiameter') {
+                inputFields.innerHTML += '<label for="diameter">Masukkan Diameter (d):</label>';
+                inputFields.innerHTML += '<input type="number" id="diameter" placeholder="Diameter dalam satuan" />';
+            } else if (operation === 'circleArc') {
+                inputFields.innerHTML += '<label for="radiusArc">Masukkan Jari-jari (r):</label>';
+                inputFields.innerHTML += '<input type="number" id="radiusArc" placeholder="Jari-jari dalam satuan" />';
+                inputFields.innerHTML += '<label for="angle">Masukkan Sudut Juring (derajat):</label>';
+                inputFields.innerHTML += '<input type="number" id="angle" placeholder="Sudut dalam derajat" />';
+            } else if (operation === 'circleTangent') {
+                inputFields.innerHTML += '<label for="radiusTangent">Masukkan Jari-jari Lingkaran (r):</label>';
+                inputFields.innerHTML += '<input type="number" id="radiusTangent" placeholder="Jari-jari dalam satuan" />';
+                inputFields.innerHTML += '<label for="distanceCenter">Masukkan Jarak dari Pusat ke Garis Singgung (d):</label>';
+                inputFields.innerHTML += '<input type="number" id="distanceCenter" placeholder="Jarak dalam satuan" />';
+            } else if (operation === 'circleInTriangle') {
+                inputFields.innerHTML += '<label for="sideA">Masukkan Panjang Sisi Segitiga (a):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideA" placeholder="Sisi a" />';
+                inputFields.innerHTML += '<label for="sideB">Masukkan Panjang Sisi Segitiga (b):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideB" placeholder="Sisi b" />';
+                inputFields.innerHTML += '<label for="sideC">Masukkan Panjang Sisi Segitiga (c):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideC" placeholder="Sisi c" />';
+            } else if (operation === 'circleOutTriangle') {
+                inputFields.innerHTML += '<label for="sideAOut">Masukkan Panjang Sisi Segitiga (a):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideAOut" placeholder="Sisi a" />';
+                inputFields.innerHTML += '<label for="sideBOut">Masukkan Panjang Sisi Segitiga (b):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideBOut" placeholder="Sisi b" />';
+                inputFields.innerHTML += '<label for="sideCOut">Masukkan Panjang Sisi Segitiga (c):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideCOut" placeholder="Sisi c" />';
+            } else if (operation === 'square') {
+                inputFields.innerHTML += '<label for="sideSquare">Masukkan Sisi (s):</label>';
+                inputFields.innerHTML += '<input type="number" id="sideSquare" placeholder="Sisi dalam satuan" />';
+            } else if (operation === 'rectangle') {
+                inputFields.innerHTML += '<label for="length">Masukkan Panjang (l):</label>';
+                inputFields.innerHTML += '<input type="number" id="length" placeholder="Panjang dalam satuan" />';
+                inputFields.innerHTML += '<label for="width">Masukkan Lebar (w):</label>';
+                inputFields.innerHTML += '<input type="number" id="width" placeholder="Lebar dalam satuan" />';
+            } else if (operation === 'triangle') {
+                inputFields.innerHTML += '<label for="base">Masukkan Alas (a):</label>';
+                inputFields.innerHTML += '<input type="number" id="base" placeholder="Alas dalam satuan" />';
+                inputFields.innerHTML += '<label for="height">Masukkan Tinggi (t):</label>';
+                inputFields.innerHTML += '<input type="number" id="height" placeholder="Tinggi dalam satuan" />';
+            } else if (operation === 'distance') {
+                inputFields.innerHTML += '<label for="speed">Masukkan Kecepatan (v):</label>';
+                inputFields.innerHTML += '<input type="number" id="speed" placeholder="Kecepatan dalam satuan" />';
+                inputFields.innerHTML += '<label for="time">Masukkan Waktu (t):</label>';
+                inputFields.innerHTML += '<input type="number" id="time" placeholder="Waktu dalam satuan" />';
+            } else if (operation === 'chemical') {
+                inputFields.innerHTML += '<label for="mass">Masukkan Massa (m):</label>';
+                inputFields.innerHTML += '<input type="number" id="mass" placeholder="Massa dalam gram" />';
+                inputFields.innerHTML += '<label for="molarMass">Masukkan Massa Molar (M):</label>';
+                inputFields.innerHTML += '<input type="number" id="molarMass" placeholder="Massa molar dalam g/mol" />';
+            }
+        }
+
+        function hitung() {
+            const operation = document.getElementById('operation').value;
+            let resultText = '';
+
+            if (operation === 'circleRadius') {
+                const radius = parseFloat(document.getElementById('radius').value);
+                if (isNaN(radius) || radius <= 0) {
+                    resultText = "Silakan masukkan jari-jari yang valid.";
+                } else {
+                    const diameter = 2 * radius;
+                    const luas = Math.PI * Math.pow(radius, 2);
+                    const keliling = 2 * Math.PI * radius;
+                    resultText = `
+                        Diameter: ${diameter.toFixed(2)}<br>
+                        Luas: ${luas.toFixed(2)}<br>
+                        Keliling: ${keliling.toFixed(2)}
+                    `;
+                }
+            } else if (operation === 'circleDiameter') {
+                const diameter = parseFloat(document.getElementById('diameter').value);
+                if (isNaN(diameter) || diameter <= 0) {
+                    resultText = "Silakan masukkan diameter yang valid.";
+                } else {
+                    const radius = diameter / 2;
+                    resultText = `Jari-jari: ${radius.toFixed(2)}`;
+                }
+            } else if (operation === 'circleArc') {
+                const radius = parseFloat(document.getElementById('radiusArc').value);
+                const angle = parseFloat(document.getElementById('angle').value);
+                if (isNaN(radius) || radius <= 0 || isNaN(angle) || angle <= 0) {
+                    resultText = "Silakan masukkan jari-jari dan sudut yang valid.";
+                } else {
+                    const luasJuring = (angle / 360) * Math.PI * Math.pow(radius, 2);
+                    resultText = `Luas Juring: ${luasJuring.toFixed(2)}`;
+                }
+            } else if (operation === 'circleTangent') {
+                const radius = parseFloat(document.getElementById('radiusTangent').value);
+                const distance = parseFloat(document.getElementById('distanceCenter').value);
+                if (isNaN(radius) || radius <= 0 || isNaN(distance) || distance <= 0) {
+                    resultText = "Silakan masukkan jari-jari dan jarak yang valid.";
+                } else {
+                    const panjangTangent = Math.sqrt(Math.pow(distance, 2) - Math.pow(radius, 2));
+                    resultText = `Panjang Garis Singgung: ${panjangTangent.toFixed(2)}`;
+                }
+            } else if (operation === 'circleInTriangle') {
+                const a = parseFloat(document.getElementById('sideA').value);
+                const b = parseFloat(document.getElementById('sideB').value);
+                const c = parseFloat(document.getElementById('sideC').value);
+                const s = (a + b + c) / 2; // Semi-perimeter
+                if (isNaN(a) || a <= 0 || isNaN(b) || b <= 0 || isNaN(c) || c <= 0) {
+                    resultText = "Silakan masukkan panjang sisi yang valid.";
+                } else {
+                    const radiusIn = Math.sqrt((s * (s - a) * (s - b) * (s - c)) / s);
+                    resultText = `Jari-jari Lingkaran Dalam: ${radiusIn.toFixed(2)}`;
+                }
+            } else if (operation === 'circleOutTriangle') {
+                const a = parseFloat(document.getElementById('sideAOut').value);
+                const b = parseFloat(document.getElementById('sideBOut').value);
+                const c = parseFloat(document.getElementById('sideCOut').value);
+                if (isNaN(a) || a <= 0 || isNaN(b) || b <= 0 || isNaN(c) || c <= 0) {
+                    resultText = "Silakan masukkan panjang sisi yang valid.";
+                } else {
+                    const radiusOut = (a * b * c) / (4 * Math.sqrt((a + b + c) * (a + b - c) * (a + c - b) * (b + c - a)));
+                    resultText = `Jari-jari Lingkaran Luar: ${radiusOut.toFixed(2)}`;
+                }
+            } else if (operation === 'square') {
+                const side = parseFloat(document.getElementById('sideSquare').value);
+                if (isNaN(side) || side <= 0) {
+                    resultText = "Silakan masukkan sisi yang valid.";
+                } else {
+                    const luas = Math.pow(side, 2);
+                    const keliling = 4 * side;
+                    resultText = `
+                        Luas: ${luas.toFixed(2)}<br>
+                        Keliling: ${keliling.toFixed(2)}
+                    `;
+                }
+            } else if (operation === 'rectangle') {
+                const length = parseFloat(document.getElementById('length').value);
+                const width = parseFloat(document.getElementById('width').value);
+                if (isNaN(length) || length <= 0 || isNaN(width) || width <= 0) {
+                    resultText = "Silakan masukkan panjang dan lebar yang valid.";
+                } else {
+                    const luas = length * width;
+                    const keliling = 2 * (length + width);
+                    resultText = `
+                        Luas: ${luas.toFixed(2)}<br>
+                        Keliling: ${keliling.toFixed(2)}
+                    `;
+                }
+            } else if (operation === 'triangle') {
+                const base = parseFloat(document.getElementById('base').value);
+                const height = parseFloat(document.getElementById('height').value);
+                if (isNaN(base) || base <= 0 || isNaN(height) || height <= 0) {
+                    resultText = "Silakan masukkan alas dan tinggi yang valid.";
+                } else {
+                    const luas = 0.5 * base * height;
+                    resultText = `Luas Segitiga: ${luas.toFixed(2)}`;
+                }
+            } else if (operation === 'distance') {
+                const speed = parseFloat(document.getElementById('speed').value);
+                const time = parseFloat(document.getElementById('time').value);
+                if (isNaN(speed) || speed <= 0 || isNaN(time) || time <= 0) {
+                    resultText = "Silakan masukkan kecepatan dan waktu yang valid.";
+                } else {
+                    const distance = speed * time;
+                    resultText = `Jarak: ${distance.toFixed(2)}`;
+                }
+            } else if (operation === 'chemical') {
+                const mass = parseFloat(document.getElementById('mass').value);
+                const molarMass = parseFloat(document.getElementById('molarMass').value);
+                if (isNaN(mass) || mass <= 0 || isNaN(molarMass) || molarMass <= 0) {
+                    resultText = "Silakan masukkan massa dan massa molar yang valid.";
+                } else {
+                    const moles = mass / molarMass;
+                    resultText = `Jumlah Mol: ${moles.toFixed(2)}`;
+                }
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+</body>
+
+</html>
